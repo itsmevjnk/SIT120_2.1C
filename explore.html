@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Exploring Vue 3</title>
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" href="style.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    </head>
+    <body id="app">
+        <header>
+            <h1>{{ title }}</h1>
+            <i>Created for the SIT120 2.1C task</i>
+        </header>
+        <main>
+            <div class="container">
+                <section>
+                    <h2>Fibonacci Sequence Generator v2</h2>
+                    <div class="margin-center">
+                        <label for="fib_n">Sequence length: </label>
+                        <input @input="fib_calculate()" type="number" id="fib_n" name="fib_n" min="1" max="100" v-model.number="fib_n"/>
+                    </div>
+                    <div v-show="fib_n != ''">
+                        First <b>{{ fib_n }}</b> element<span v-show="fib_n > 1">s</span> of the Fibonacci sequence:<br/>
+                        <span class="monospace">{{ fib_output }}</span>
+                    </div>
+                </section>
+                <section>
+                    <h2>Form Input Handlings</h2>
+                    <i>Type anything here and get it converted to anything you like below!</i>
+                    <textarea rows="6" v-model="form_textarea" placeholder="Type anything here..."></textarea>
+                    Convert to:
+                    <select v-model="form_convert">
+                        <option disabled value="">Please select one</option>
+                        <option value="upper">UPPERCASE</option>
+                        <option value="lower">lowercase</option>
+                        <option value="noconv">No conversion (output as is)</option>
+                    </select>
+                    <div class="preline" v-if="form_convert === 'upper'">{{ form_textarea.toUpperCase() }}</div>
+                    <div class="preline" v-else-if="form_convert === 'lower'">{{ form_textarea.toLowerCase() }}</div>
+                    <div class="preline" v-else-if="form_convert === 'noconv'">{{ form_textarea }}</div>
+                    <div v-else>Please select an option above...</div>
+                </section>
+                <section>
+                    <h2>v-if and v-for Example</h2>
+                    <div class="margin-center">
+                        <label for="iffor_elem">Add this element to the list: </label>
+                        <input type="text" id="iffor_elem" name="iffor_elem" v-model="iffor_elem"/>
+                        <button @click="iffor_list.push(iffor_elem)">Add</button>
+                        <button @click="iffor_show = !iffor_show">{{ (iffor_show) ? "Hide" : "Show" }}</button>
+                        <button @click="iffor_list.splice(0, iffor_list.length)">Clear</button>
+                    </div>
+                    <ol start="0">
+                        <template v-if="iffor_show" v-for="elem in iffor_list">
+                            <li>{{ elem }}</li>
+                        </template>
+                    </ol>
+                    <div></div>
+                </section>
+            </div>
+        </main>
+        <footer>
+            Created by <a href="https://github.com/itsmevjnk" target="_blank">itsmevjnk</a>
+        </footer>
+    </body>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    title: 'Exploring Vue 3',
+                    form_textarea: '',
+                    form_convert: '',
+                    fib_n: 10,
+                    fib_output: '',
+                    iffor_list: [],
+                    iffor_elem: '',
+                    iffor_show: true
+                }
+            },
+
+            methods: {
+                fib_calculate: function() {
+                    if(this.fib_n >= 1) this.fib_output = '1';
+                    if(this.fib_n >= 2) this.fib_output += ' 1';
+                    let a = 1, b = 1;
+                    for(let i = 3; i <= this.fib_n; i++) {
+                        let c = a + b;
+                        a = b; b = c;
+                        this.fib_output += ' ' + c;
+                    }
+                    // console.log(this.fib_output);
+                }
+            },
+
+            beforeMount() {
+                this.fib_calculate();
+            }
+        });
+
+        app.mount('#app');
+    </script>
+</html>
