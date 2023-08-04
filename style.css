@@ -53,7 +53,7 @@ img {
     padding: 0 4px;
 }
 
-.flex-row, .side-container {
+.flex-row, .side-container, .todo-item {
     display: flex;
     flex-direction: row;
 }
@@ -94,10 +94,29 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* content container: https://getbootstrap.com/docs/5.0/layout/containers/ */
-.container {
+.container, .container-l1, .container-l2, .container-l3, .container-l4 {
     width: 100%;
-    max-width: 1320px;
     margin: 0 auto;
+}
+
+.container {
+    max-width: 1320px;
+}
+
+.container-l1 {
+    max-width: 1140px;
+}
+
+.container-l2 {
+    max-width: 960px;
+}
+
+.container-l3 {
+    max-width: 720px;
+}
+
+.container-l4 {
+    max-width: 540px;
 }
 
 @media(max-width: 1399px) {
@@ -107,13 +126,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media(max-width: 1199px) {
-    .container {
+    .container, .container-l1 {
         max-width: 960px !important;
     }
 }
 
 @media(max-width: 991px) {
-    .container {
+    .container, .container-l1, .container-l2 {
         max-width: 720px !important;
     }
 
@@ -137,13 +156,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media(max-width: 767px) {
-    .container {
+    .container, .container-l1, .container-l2, .container-l3 {
         max-width: 540px !important;
     }
 }
 
 @media(max-width: 575px) {
-    .container {
+    .container, .container-l1, .container-l2, .container-l3, .container-l4 {
         max-width: 100% !important;
     }
 }
@@ -154,6 +173,7 @@ input[type="number"] {
 
 textarea {
     width: 100%;
+    resize: none;
 }
 
 .margin-center {
@@ -170,4 +190,53 @@ input, button, select, textarea {
     font-size: inherit;
     margin-left: 2px;
     margin-right: 2px;
+}
+
+.block {
+    display: block;
+}
+
+/* color palette: https://colorhunt.co/palette/fdfdbdc8ffd4b8e8fcb1afff */
+.todo-item.color-0 { background-color: #fdfdbd; }
+.todo-item.color-1 { background-color: #c8ffd4; }
+.todo-item.color-2 { background-color: #b8e8fc; }
+.todo-item.color-3 { background-color: #b1afff; }
+
+.todo-item {
+    align-items: flex-start;
+    margin: 6px 0;
+    padding: 10px;
+    border-radius: 10px;;
+}
+
+.todo-item .content {
+    flex: 1;
+    white-space: pre-line;
+    padding: 6px;
+}
+
+.todo-item .button {
+    flex: 0;
+    cursor: pointer;
+    padding: 4px;
+}
+
+/* fade in transition */
+.fade-in {
+    animation: fade_in .5s;
+}
+
+@keyframes fade_in {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+/* fade out transition */
+.fade-out {
+    animation: fade_out .5s;
+}
+
+@keyframes fade_out {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
 }

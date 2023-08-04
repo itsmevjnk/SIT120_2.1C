@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Todo App</title>
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" href="style.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    </head>
+    <body id="app">
+        <header>
+            <h1>{{ title }}</h1>
+            <i>Created for the SIT120 2.1C task</i>
+        </header>
+        <main>
+            <div class="container-l3">
+                <section>
+                    <h2 class="margin-center">What are you planning to do today?</h2>
+                    <textarea rows="6" v-model="todo_input"></textarea>
+                    <button @click="add_item()" :disabled="todo_input == ''" class="block margin-center">Add</button>
+                </section>
+                <section>
+                    <div v-for="([color, content], i) in todo_items" v-bind:id="'item-' + i" v-bind:class="'todo-item color-' + color + ((i === new_item) ? ' fade-in' : '')">
+                        <div class="content">{{ content }}</div>
+                        <div class="button" @click="delete_item" v-bind:data-itemno="i">❌</div>
+                    </div>
+                </section>
+            </div>
+        </main>
+        <footer>
+            Created by <a href="https://github.com/itsmevjnk" target="_blank">itsmevjnk</a>
+        </footer>
+    </body>
+    <script>
+
+        const app = Vue.createApp({
+            data() {
+                return {
+                    title: 'itsmevjnk\'s Todo App',
+                    todo_input: '',
+                    todo_items: [],
+                    new_item: NaN
+                }
+            },
+
+            methods: {
+                add_item: function() {
+                    var color;
+
+                    /* make sure that two items next to each other don't have the same color */
+                    if(this.todo_items.length == 0) color = Math.floor(Math.random() * 3);
+                    else {
+                        const last_color = this.todo_items[this.todo_items.length - 1][0];
+                        do {
+                            color = Math.floor(Math.random() * 3);
+                        } while(color == last_color);
+                    }
+
+                    this.new_item = this.todo_items.length; // set new item for fade in effect to be added on next update
+                    
+                    this.todo_items.push([color, this.todo_input]);
+                    this.todo_input = '';
+
+                    setTimeout(() => {
+                        document.getElementById('item-' + this.new_item).classList.remove('fade-in');
+                        this.new_item = NaN;
+                    }, 600); // make sure that the element has finished rendering and transitioning
+                },
+
+                delete_item: function(event) {
+                    /* Vue.js transition does not work well, so here we go... */
+                    event.target.parentNode.classList.add('fade-out');
+                    setTimeout(() => {
+                        var itemno = event.target.dataset.itemno;
+                        // document.getElementById('item-' + itemno).remove();
+                        this.todo_items.splice(parseInt(itemno), 1);
+                    }, 400); // wait until parent node has more or less finished its fade out before deleting the element
+                }
+            },
+
+            beforeMount() {
+                
+            }
+        });
+
+        app.mount('#app');
+    </script>
+</html>
