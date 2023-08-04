@@ -52,9 +52,10 @@
                         <button @click="iffor_list.splice(0, iffor_list.length)">Clear</button>
                     </div>
                     <ol start="0">
-                        <template v-if="iffor_show" v-for="elem in iffor_list">
-                            <li>{{ elem }}</li>
-                        </template>
+                        <li v-bind:id="'elem-' + i" v-if="iffor_show" v-for="(elem, i) in iffor_list">
+                            {{ elem }}
+                            <button v-bind:onclick="'delete_elem(\'elem-' + i + '\')'">Delete</button>
+                        </li>
                     </ol>
                     <div></div>
                 </section>
@@ -65,6 +66,10 @@
         </footer>
     </body>
     <script>
+        function delete_elem(id) {
+            document.getElementById(id).remove();
+        }
+
         const app = Vue.createApp({
             data() {
                 return {
